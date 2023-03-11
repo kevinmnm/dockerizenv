@@ -27,3 +27,10 @@ BUILD_CONTEXT="myproject"
 
 REPLICAS="1"
 ```
+
+## Create **docker-compose.env**:
+```bash
+// npm run dockerizenv <docker-compose project name>
+
+npm run dockerizenv my-compose-project
+```

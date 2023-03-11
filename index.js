@@ -7,6 +7,7 @@ const {
 const dotenv = require('dotenv');
 
 const cwd = process.cwd(); // For NPM package!
+const argv = process.argv; // For NPM package!
 
 ////////////////////////////////////////
 ////////////////////////////////////////
@@ -18,7 +19,8 @@ const DOCKER_ENV_FILE = 'docker.env';
 const DOCKER_COMPOSE_ENV_FILE = 'docker-compose.env';
 
 const DEFAULT_ENVS = {
-   COMPOSE_PROJECT_NAME: 'kevsong', // For `--project-name` option.
+   // COMPOSE_PROJECT_NAME: 'kevsong', // For `--project-name` option.
+   COMPOSE_PROJECT_NAME: argv[2] || 'project', // For `--project-name` option.
    COMPOSE_FILE: './docker-compose.yml', // For `--file` option.
 }
 
