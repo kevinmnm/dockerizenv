@@ -6,6 +6,8 @@ const {
 } = require('node:child_process');
 const dotenv = require('dotenv');
 
+const cwd = process.cwd(); // For NPM package!
+
 ////////////////////////////////////////
 ////////////////////////////////////////
 
@@ -31,7 +33,8 @@ const IGNORE_FOLDERS = [
 async function dockerize() {
    try {
       //>> Detect all files in current (project) directory <<//
-      const files = await fsp.readdir(path.join(__dirname, PROJECTS_DIR), {
+      // const files = await fsp.readdir(path.join(__dirname, PROJECTS_DIR), {
+      const files = await fsp.readdir(path.join(cwd, PROJECTS_DIR), {
          encoding: 'utf8',
          withFileTypes: true
       });
@@ -55,7 +58,8 @@ async function dockerize() {
       projectDirs.forEach(async dir => {
          const projectDir = dir.name;
          dockerEnv += `### FOR PROJECT: ${projectDir} ###\n`;
-         const projectPath = path.join(__dirname, projectDir);
+         // const projectPath = path.join(__dirname, projectDir);
+         const projectPath = path.join(cwd, projectDir);
          const envFilePath = path.join(projectPath, DOCKER_ENV_FILE);
          const envContent = fs.readFileSync(envFilePath, {
             encoding: 'utf8'
@@ -92,7 +96,8 @@ async function dockerize() {
       });
 
       //>> Create new docker-compose.env file <<//
-      const dockerEnvPath = path.join(__dirname, DOCKER_COMPOSE_ENV_FILE);
+      // const dockerEnvPath = path.join(__dirname, DOCKER_COMPOSE_ENV_FILE);
+      const dockerEnvPath = path.join(cwd, DOCKER_COMPOSE_ENV_FILE);
       await fsp.writeFile(dockerEnvPath, dockerEnv, {
          encoding: 'utf8'
       });
