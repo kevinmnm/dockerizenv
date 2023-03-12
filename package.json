@@ -1,15 +1,42 @@
 {
-  "name": "dockerizenv",
-  "version": "1.2.2",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dockerizenv": "node ./index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "dotenv": "^16.0.3"
-  }
+   "name": "dockerizenv",
+   "version": "1.2.3",
+   "description": "",
+   "author": "Kevin J. Song <kevinmnm2010@gmail.com> (https://kevsong.com)",
+   "homepage": "https://github.com/kevinmnm/dockerizenv",
+   "bugs": {
+      "url": "https://github.com/kevinmnm/dockerizenv/issues"
+   },
+   "main": "index.js",
+   "scripts": {
+      "dockerizenv": "node ./index.js"
+   },
+   "license": "MIT",
+   "dependencies": {
+      "dotenv": "^16.0.3"
+   },
+   "keywords": [
+      "dockerizenv",
+      "dockerize",
+      "dockerize-env",
+      "dockerfile",
+      "dockerfile-generator",
+      "docker-env-generator",
+      "auto-dockerfile",
+      "docker-compose",
+      "docker-composize",
+      "docker",
+      "env",
+      "dotenv",
+      "kubernetes",
+      "kubernetes-env",
+      "auto-env",
+      ".env",
+      "dockerizing",
+      "docker-nodejs",
+      "docker-node",
+      "javascript-docker",
+      "dockerjs",
+      "kubernetesjs"
+   ]
 }
