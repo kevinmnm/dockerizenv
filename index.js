@@ -254,7 +254,7 @@ function addDockerfile(ppath, name) {
 
       ENV \\
          *NAME=\${NAME:?error} \\
-         *TYPE=\${TYPE:?\${NAME}_error} \\
+         *TYPE=\${TYPE:-main} \\
          *PORT=\${PORT:?\${NAME}_error} \\
          *WORKDIR=\${WORKDIR:?\${NAME}_error}
       
