@@ -1,7 +1,7 @@
-## Add script in **package.json**.
+## Add dockerizenv script in your project **package.json**.
 ```json
 "scripts": {
-   "dockerizenv": "node ./index.js"
+   "dockerizenv": "node ./node_modules/dockerizenv/index.js"
 },
 ```
 
