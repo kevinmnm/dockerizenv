@@ -24,6 +24,7 @@ const DEFAULT_ENVS = {
    // COMPOSE_PROJECT_NAME: 'kevsong', // For `--project-name` option.
    COMPOSE_PROJECT_NAME: argv[2] || 'project', // For `--project-name` option.
    COMPOSE_FILE: './docker-compose.yml', // For `--file` option.
+   DOCKER_FILE_NAME: 'Dockerfile'
 }
 
 const IGNORE_FOLDERS = [
@@ -107,7 +108,8 @@ async function dockerize() {
          dockerEnv += '\n';
 
          //>> Add content to docker-compse.yml <<//
-         addDockerCompose(envParsed);
+         addToDockerComposeYML(envParsed);
+         addDockerfile(projectPath, NAME)
       });
 
       //>> Create new docker-compose.env file <<//
@@ -124,7 +126,7 @@ async function dockerize() {
    }
 }
 
-function addDockerCompose(envs) {
+function addToDockerComposeYML(envs) {
    const serviceName = envs.NAME.replaceAll('-', '_');
    const NAME = serviceName.toUpperCase();
 
@@ -225,6 +227,55 @@ function addDockerCompose(envs) {
    //     ports:
    //       - ${PORT_MMF}:${PORT_MMF}
    // `
+}
+
+function addDockerfile(ppath, name) {
+   if (!ppath) {
+      console.log();
+      console.error('Invalid project path');
+      return;
+   };
+   const dockerfilePath = path.join(ppath, DEFAULT_ENVS.DOCKER_FILE_NAME);
+   const dockerfileExists = fs.existsSync(dockerfilePath);
+   if (dockerfileExists) {
+      const msg = `Looks like ${DEFAULT_ENVS.DOCKER_FILE_NAME} already exists in project ${name}. Skipping Dockerfile creation.`;
+      console.log();
+      console.info(msg);
+      return;
+   }
+
+   const dockerfile = `
+      FROM node:16-alpine
+
+      ARG NAME
+      ARG TYPE
+      ARG PORT
+      ARG WORKDIR
+
+      ENV \\
+         *NAME=\${NAME:?error} \\
+         *TYPE=\${TYPE:?\${NAME}_error} \\
+         *PORT=\${PORT:?\${NAME}_error} \\
+         *WORKDIR=\${WORKDIR:?\${NAME}_error}
+      
+      WORKDIR \${WORKDIR}
+
+      COPY . .
+
+      RUN npm install
+
+      CMD ["npm", "run", "start"]
+
+      EXPOSE \${PORT}
+   `
+      .split('\n')
+      .map(line => line.trim().replaceAll('*', '   '))
+      .join('\n');
+
+   fs.writeFileSync(dockerfilePath, dockerfile, {
+      encoding: 'utf8',
+      flag: 'w',
+   });
 }
 
 function s(n = 1) {
