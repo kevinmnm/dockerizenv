@@ -114,15 +114,23 @@ async function dockerize() {
 
       //>> Create new docker-compose.env file <<//
       const dockerEnvPath = path.join(cwd, DOCKER_COMPOSE_ENV_FILE);
+
+      const dockerComposeYmlExists = fs.existsSync(dockerComposeFilePath);
+      if (dockerComposeYmlExists) {
+         console.log(`Looks like ${DEFAULT_ENVS.COMPOSE_FILE} already exists. Skipping creation.`);
+         return;
+      }
+
       await fsp.writeFile(dockerEnvPath, dockerEnv, {
          encoding: 'utf8'
       });
 
       console.log(`\n\n${DEFAULT_ENVS.COMPOSE_FILE} was created!`);
-      console.log(`\nDONE!`);
 
    } catch (error) {
       throw new Error(error);
+   } finally {
+      console.log(`\nDONE!`);
    }
 }
 
