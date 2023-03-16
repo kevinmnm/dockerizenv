@@ -41,6 +41,9 @@ let dcYML = `version: '${DOCKER_COMPOSE_VERSION}'\n\nservices:`;
 
 async function dockerize() {
    try {
+      //>> Check if docker-compose.yml already exists <<//
+      const dockerComposeYmlExists = fs.existsSync(dockerComposeFilePath);
+
       //>> Detect all files in current (project) directory <<//
       const files = await fsp.readdir(path.join(cwd, PROJECTS_DIR), {
          encoding: 'utf8',
@@ -104,15 +107,14 @@ async function dockerize() {
 
          dockerEnv += '\n';
 
-         //>> Add content to docker-compse.yml <<//
-         addToDockerComposeYML(envParsed);
+         //>> Add content to docker-compse.yml and Dockerfile <<//
+         (!dockerComposeYmlExists) && (addToDockerComposeYML(envParsed));
          addDockerfile(projectPath, NAME)
       });
 
       //>> Create new docker-compose.env file <<//
       const dockerEnvPath = path.join(cwd, DOCKER_COMPOSE_ENV_FILE);
 
-      const dockerComposeYmlExists = fs.existsSync(dockerComposeFilePath);
       if (dockerComposeYmlExists) {
          console.log(`Looks like ${DEFAULT_ENVS.COMPOSE_FILE} already exists. Skipping creation.`);
          return;
