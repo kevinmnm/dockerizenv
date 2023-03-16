@@ -113,16 +113,17 @@ async function dockerize() {
       });
 
       //>> Create new docker-compose.env file <<//
-      const dockerEnvPath = path.join(cwd, DOCKER_COMPOSE_ENV_FILE);
+      const dockerComposeEnvPath = path.join(cwd, DOCKER_COMPOSE_ENV_FILE);
 
+      await fsp.writeFile(dockerComposeEnvPath, dockerEnv, {
+         encoding: 'utf8'
+      });
+
+      //>> Create new docker-compose.yml file <<//
       if (dockerComposeYmlExists) {
          console.log(`Looks like ${DEFAULT_ENVS.COMPOSE_FILE} already exists. Skipping creation.`);
          return;
       }
-
-      await fsp.writeFile(dockerEnvPath, dockerEnv, {
-         encoding: 'utf8'
-      });
 
       console.log(`\n\n${DEFAULT_ENVS.COMPOSE_FILE} was created!`);
 
