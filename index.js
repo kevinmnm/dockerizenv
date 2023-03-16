@@ -41,9 +41,6 @@ let dcYML = `version: '${DOCKER_COMPOSE_VERSION}'\n\nservices:`;
 
 async function dockerize() {
    try {
-      //>> Initialize docker-compose.yml file content <<//
-      await fsp.writeFile(dockerComposeFilePath, dcYML);
-
       //>> Detect all files in current (project) directory <<//
       const files = await fsp.readdir(path.join(cwd, PROJECTS_DIR), {
          encoding: 'utf8',
