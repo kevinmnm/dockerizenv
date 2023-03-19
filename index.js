@@ -1,20 +1,25 @@
 const path = require('node:path');
 const fs = require('node:fs');
 const fsp = require('node:fs/promises');
-const {
-   exec
-} = require('node:child_process');
+const yargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
+// const {
+//    exec
+// } = require('node:child_process');
 const dotenv = require('dotenv');
 
 const cwd = process.cwd(); // For NPM package!
-const argv = process.argv; // For NPM package!
+// const argv = process.argv; // For NPM package!
+const argv = yargs(hideBin(process.argv)).argv // For NPM package!
+const projectName = argv["project-name"];
+const envFile = argv["env-file"];
 
 ////////////////////////////////////////
 ////////////////////////////////////////
 
 const PROJECTS_DIR = '.';
 
-const DOCKER_ENV_FILE = 'docker.env';
+const DOCKER_ENV_FILE = envFile || 'docker.env';
 
 const DOCKER_COMPOSE_VERSION = '3.8';
 
@@ -22,7 +27,7 @@ const DOCKER_COMPOSE_ENV_FILE = 'docker-compose.env';
 
 const DEFAULT_ENVS = {
    // COMPOSE_PROJECT_NAME: 'kevsong', // For `--project-name` option.
-   COMPOSE_PROJECT_NAME: argv[2] || 'project', // For `--project-name` option.
+   COMPOSE_PROJECT_NAME: projectName || 'project', // For `--project-name` option.
    COMPOSE_FILE: './docker-compose.yml', // For `--file` option.
    DOCKER_FILE_NAME: 'Dockerfile'
 }
