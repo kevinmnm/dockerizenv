@@ -4,7 +4,7 @@ This package is to create basic **docker-compose.env**. It'll also create **dock
 ---
 
 #### *Project folder strucutre example:*
-
+```
 📦 root
  ┣ 📂 project1
  ┃ ┣ 📜 docker.env
@@ -15,9 +15,9 @@ This package is to create basic **docker-compose.env**. It'll also create **dock
  ┣ 📂 project3
  ┃ ┣ 📜 docker.env
  ┃ ┗ 📜 Dockerfile
- ┣ 📜 ***docker-compose.env*** 
+ ┣ 📜 docker-compose.env
  ┗ 📜 docker-compose.yml
- 
+ ```
 
 The **docker.env** file must be presented in each project directory as those variables will be used to create ***docker-compose.env***.
 

@@ -1,6 +1,7 @@
 const path = require('node:path');
 const fs = require('node:fs');
 const fsp = require('node:fs/promises');
+const chalk = require('chalk');
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 // const {
@@ -13,6 +14,11 @@ const cwd = process.cwd(); // For NPM package!
 const argv = yargs(hideBin(process.argv)).argv // For NPM package!
 const projectName = argv["project-name"];
 const envFile = argv["env-file"];
+
+const LOGGER = {
+   info: (msg) => console.log(chalk.blue(msg)),
+   done: (msg) => console.log(chalk.greenBright.bgBlack(msg)),
+}
 
 ////////////////////////////////////////
 ////////////////////////////////////////
@@ -60,9 +66,11 @@ async function dockerize() {
          return !file.name.startsWith('.') && file.isDirectory() && !IGNORE_FOLDERS.includes(file.name) && !file.name.startsWith('_');
       });
 
-      console.log(`Detected valid project directories: ${projectDirs.map( x => x.name).join(', ')}`);
+      // console.log(`Detected valid project directories: ${projectDirs.map( x => x.name).join(', ')}`);
+      LOGGER.info(`Detected valid project directories: ${projectDirs.map( x => x.name).join(', ')}`);
       console.log();
-      console.log(`Setting default docker-compose env: \n${Object.entries(DEFAULT_ENVS).map(x => `  ${x[0]}="${x[1]}"`).join('\n')}`);
+      // console.log(`Setting default docker-compose env: \n${Object.entries(DEFAULT_ENVS).map(x => `  ${x[0]}="${x[1]}"`).join('\n')}`);
+      LOGGER.info(`Setting default docker-compose env: \n${Object.entries(DEFAULT_ENVS).map(x => `  ${x[0]}="${x[1]}"`).join('\n')}`);
 
       let dockerEnv = `###>> DOCKER-COMPOSE CONFIGURE <<###\n`;
 
@@ -126,16 +134,20 @@ async function dockerize() {
 
       //>> Create new docker-compose.yml file <<//
       if (dockerComposeYmlExists) {
-         console.log(`Looks like ${DEFAULT_ENVS.COMPOSE_FILE} already exists. Skipping creation.`);
+         // console.log(`Looks like ${DEFAULT_ENVS.COMPOSE_FILE} already exists. Skipping creation.`);
+         console.log();
+         LOGGER.done(`Looks like ${DEFAULT_ENVS.COMPOSE_FILE} already exists. Skipping creation.`);
          return;
       }
 
-      console.log(`\n\n${DEFAULT_ENVS.COMPOSE_FILE} was created!`);
+      // console.log(`\n\n${DEFAULT_ENVS.COMPOSE_FILE} was created!`);
+      LOGGER.done(`\n\n${DEFAULT_ENVS.COMPOSE_FILE} was created!`);
 
    } catch (error) {
       throw new Error(error);
    } finally {
-      console.log(`\nDONE!`);
+      // console.log(`\nDONE!`);
+      LOGGER.done(`\nDONE!`);
    }
 }
 
@@ -253,7 +265,8 @@ function addDockerfile(ppath, name) {
    if (dockerfileExists) {
       const msg = `Looks like ${DEFAULT_ENVS.DOCKER_FILE_NAME} already exists in project ${name}. Skipping Dockerfile creation.`;
       console.log();
-      console.info(msg);
+      // console.info(msg);
+      LOGGER.done(msg);
       return;
    }
 
