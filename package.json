@@ -1,6 +1,6 @@
 {
    "name": "dockerizenv",
-   "version": "1.5.3",
+   "version": "1.6.3",
    "description": "",
    "author": "Kevin J. Song <kevinmnm2010@gmail.com> (https://kevsong.com)",
    "homepage": "https://github.com/kevinmnm/dockerizenv",
@@ -8,6 +8,11 @@
       "url": "https://github.com/kevinmnm/dockerizenv/issues"
    },
    "main": "index.js",
+
+   "bin": {
+      "dockerizenv": "node ./index.js"
+   },
+
    "scripts": {
       "dockerizenv": "node ./index.js"
    },
